@@ -1,4 +1,4 @@
-# opentracing-zipkin-tracer-impl
+# opentracing-zipkin-tracer-impl [![Build Status](https://api.travis-ci.org/WASdev/sample.opentracing.zipkintracer.svg?branch=master)](https://travis-ci.org/WASdev/sample.opentracing.zipkintracer)
 This sample project provides an [opentracing.io](http://opentracing.io/) tracer implementation wrapped as a [Liberty feature](https://www.ibm.com/support/knowledgecenter/en/SSEQTP_8.5.5/com.ibm.websphere.wlp.doc/ae/rwlp_feat.html).  The [Zipkin](http://http://zipkin.io/) tracer implementation is being used for this sample.
 
 ## Build
