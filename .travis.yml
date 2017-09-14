@@ -1,0 +1,4 @@
+sudo: false
+language: java
+script:
+- travis_wait mvn package -DskipTests=true
