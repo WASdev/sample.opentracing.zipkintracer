@@ -9,7 +9,7 @@ mvn clean package
 ## Deploy
 The build process creates an extension directory under Maven's target directory.  The contents of the extension directory needs to be copied into the Liberty user directory (${wlp.user.dir}).  
 ```
-cp -r target/extensions /opt/wlp/usr/
+cp -r target/extension /opt/wlp/usr/
 ```
 ## Server Configuration
 Any server where the [Zipkin](http://http://zipkin.io/) tracer is required should be configured to load this feature.  That can be accomplished by editing the server's server.xml file and adding the Zipkin open tracing feature into the server's featureManager list.
