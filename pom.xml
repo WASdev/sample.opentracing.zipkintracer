@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
   
     <groupId>net.wasdev.wlp.tracer</groupId>
-    <artifactId>liberty-opentracing-zipkintracer</artifactId> 
+    <artifactId>liberty-opentracing-zipkintracer</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
   
