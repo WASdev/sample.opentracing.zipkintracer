@@ -1,11 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ibm.ws.io.opentracing.tracer</groupId>
-	<artifactId>liberty-zipkin-tracer</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0</version>
+  
+    <groupId>net.wasdev.wlp.tracer</groupId>
+    <artifactId>liberty-opentracing-zipkintracer</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+  
 	<name>liberty-zipkin-tracer</name>
-	<url>http://maven.apache.org</url>
+    <description>
+       Sample Liberty profile feature demonstrating an opentracing.io API compliant Zipkin tracer 
+    </description>
+    <url>https://wasdev.github.io</url>
+	
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/io.opentracing.brave/brave-opentracing -->
 		<dependency>
@@ -76,7 +82,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<outputFile>target/extension/lib/com.ibm.ws.io.opentracing.zipkintracer-0.30.jar</outputFile>
+							<outputFile>target/sample/extension/lib/com.ibm.ws.io.opentracing.zipkintracer-0.30.jar</outputFile>
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<artifactSet>
 								<excludes>
@@ -141,7 +147,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/extension/lib/features</outputDirectory>
+							<outputDirectory>${basedir}/target/sample/extension/lib/features</outputDirectory>
 							<resources>          
 								<resource>
 									<directory>src/features</directory>
@@ -152,6 +158,48 @@
 					</execution>
 				</executions>
 			</plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-assembly-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>create-distribution</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>single</goal>
+                  </goals>
+                  <configuration>
+                    <descriptors>
+                      <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>    
 		</plugins>
 	</build>
 </project>
