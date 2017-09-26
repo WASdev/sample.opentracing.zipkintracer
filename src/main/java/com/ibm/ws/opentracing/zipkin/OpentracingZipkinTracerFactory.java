@@ -14,6 +14,10 @@ package com.ibm.ws.opentracing.zipkin;
 import java.util.Map;
 
 import org.osgi.service.component.ComponentContext;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.ConfigurationPolicy;
 
 import com.ibm.ws.opentracing.tracer.OpentracingTracerFactory;
 
@@ -22,6 +26,9 @@ import io.opentracing.Tracer;
 /**
  * Factory for delivering Opentracing Tracers backed by Zipkin implementation.
  */
+
+//Annotation is used for the creation of the OSGI bundle manfiest information.
+@Component(immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL, configurationPid = "opentracingZipkin")
 public class OpentracingZipkinTracerFactory implements OpentracingTracerFactory {
 	private final String HOST_PROPERTY_NAME = "host";
 	private final String PORT_PROPERTY_NAME = "port";
@@ -31,10 +38,12 @@ public class OpentracingZipkinTracerFactory implements OpentracingTracerFactory 
 	String zipkinHost;
 	String zipkinPort;
 
+	@Activate
 	protected void activate(ComponentContext ctx, Map<String, Object> config) {
 		modified(ctx, config);
 	}
 
+	@Modified
 	protected void modified(ComponentContext ctx, Map<String, Object> config) {
 		zipkinHost = (String) config.get(HOST_PROPERTY_NAME);
 		zipkinPort = (String) config.get(PORT_PROPERTY_NAME);

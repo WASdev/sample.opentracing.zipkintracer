@@ -23,13 +23,21 @@ import zipkin.reporter.Sender;
 import zipkin.reporter.okhttp3.OkHttpSender;
 
 /**
- * 
+ * This class wraps the Brave tracer to provide a
+ * generic tracer implementation to the opentracing feature.
+ *
+ * In theory the Brave tracer could be replaced by another tracer
+ * implementation.
  *
  */
 public class OpentracingZipkinTracer implements Tracer {
 	Tracer tracer;
 
 	/**
+	 * Creates and returns a tracer that is uses 
+	 * a serviceName and the location of a zipkin host/port
+	 * to provide tracing capability.
+	 *
 	 * @param serviceName
 	 * @param zipkinHost
 	 * @param zipkinPort
