@@ -45,7 +45,7 @@ Finally, enable the tracer with a configuration element (this defaults to a serv
 ### Configuring the tracer
 
 The `opentracingZipkin` element supports configuration of the zipkin server host and port,
-and detailed configuration of the zipkin builder and report. This support is provided by
+and detailed configuration of the zipkin builder and reporter. This support is provided by
 the `Config` class in [OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java).
 The options are localized and described in detail in [metatype.properties](src/main/resources/OSGI-INF/i10n/metatype.properties).
 
