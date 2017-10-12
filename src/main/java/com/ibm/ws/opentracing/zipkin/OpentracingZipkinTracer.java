@@ -10,6 +10,10 @@
  *******************************************************************************/
 package com.ibm.ws.opentracing.zipkin;
 
+import java.util.concurrent.TimeUnit;
+
+import com.ibm.ws.opentracing.zipkin.OpentracingZipkinTracerFactory.Config;
+
 import brave.Tracing;
 import brave.opentracing.BraveTracer;
 import io.opentracing.ActiveSpan;
@@ -39,13 +43,35 @@ public class OpentracingZipkinTracer implements Tracer {
 	 * to provide tracing capability.
 	 *
 	 * @param serviceName
-	 * @param zipkinHost
-	 * @param zipkinPort
+	 * @param config
 	 */
-	public OpentracingZipkinTracer(String serviceName, String zipkinHost, String zipkinPort) {
-		String traceServiceUrl = "http://"+zipkinHost+":"+zipkinPort+"/api/v1/spans";
-		Sender sender = OkHttpSender.create(traceServiceUrl);
-		Reporter<zipkin.Span> reporter = AsyncReporter.builder(sender).build();
+	public OpentracingZipkinTracer(String serviceName, Config config) {
+		String traceServiceUrl = "http://"+config.host()+":"+config.port()+"/api/v1/spans";
+		OkHttpSender.Builder senderBuilder = OkHttpSender.builder().endpoint(traceServiceUrl).compressionEnabled(config.compress());
+		if (config.maxRequests() != Integer.MIN_VALUE) {
+			senderBuilder.maxRequests(config.maxRequests());
+		}
+		if (config.encoding() != null) {
+			senderBuilder.encoding(config.encoding());
+		}
+		if (config.maxMessageSize() != Integer.MIN_VALUE) {
+			senderBuilder.messageMaxBytes(config.maxMessageSize());
+		}
+		Sender sender = senderBuilder.build();
+		AsyncReporter.Builder reporterBuilder = AsyncReporter.builder(sender);
+		if (config.closeTimeout() != Integer.MIN_VALUE) {
+			reporterBuilder.closeTimeout(config.closeTimeout(), TimeUnit.SECONDS);
+		}
+		if (config.messageTimeout() != Integer.MIN_VALUE) {
+			reporterBuilder.messageTimeout(config.messageTimeout(), TimeUnit.SECONDS);
+		}
+		if (config.queuedMaxBytes() != Integer.MIN_VALUE) {
+			reporterBuilder.queuedMaxBytes(config.queuedMaxBytes());
+		}
+		if (config.queuedMaxSpans() != Integer.MIN_VALUE) {
+			reporterBuilder.queuedMaxSpans(config.queuedMaxSpans());
+		}
+		Reporter<zipkin.Span> reporter = reporterBuilder.build();
 		Tracing braveTracing = Tracing.newBuilder()
 				.localServiceName(serviceName)
 				.reporter(reporter)
@@ -59,22 +85,22 @@ public class OpentracingZipkinTracer implements Tracer {
 	}
 
 	/** {@inheritDoc} */
-	public ActiveSpan makeActive(Span arg0) {
-		return tracer.makeActive(arg0);
+	public ActiveSpan makeActive(Span span) {
+		return tracer.makeActive(span);
 	}
 
 	/** {@inheritDoc} */
-	public SpanBuilder buildSpan(String arg0) {
-		return tracer.buildSpan(arg0);
+	public SpanBuilder buildSpan(String operationName) {
+		return tracer.buildSpan(operationName);
 	}
 
 	/** {@inheritDoc} */
-	public <C> SpanContext extract(Format<C> arg0, C arg1) {
-		return tracer.extract(arg0, arg1);
+	public <C> SpanContext extract(Format<C> format, C carrier) {
+		return tracer.extract(format, carrier);
 	}
 
 	/** {@inheritDoc} */
-	public <C> void inject(SpanContext arg0, Format<C> arg1, C arg2) {
-		tracer.inject(arg0, arg1, arg2);
+	public <C> void inject(SpanContext spanContext, Format<C> format, C carrier) {
+		tracer.inject(spanContext, format, carrier);
 	}
 }

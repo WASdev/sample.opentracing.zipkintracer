@@ -13,15 +13,17 @@ package com.ibm.ws.opentracing.zipkin;
 
 import java.util.Map;
 
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
+import org.osgi.service.component.annotations.Modified;
 
 import com.ibm.ws.opentracing.tracer.OpentracingTracerFactory;
 
+import aQute.bnd.annotation.metatype.Configurable;
+import aQute.bnd.annotation.metatype.Meta;
 import io.opentracing.Tracer;
+import zipkin.reporter.Encoding;
 
 /**
  * Factory for delivering Opentracing Tracers backed by Zipkin implementation.
@@ -30,38 +32,55 @@ import io.opentracing.Tracer;
 //Annotation is used for the creation of the OSGI bundle manfiest information.
 @Component(immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL, configurationPid = "opentracingZipkin")
 public class OpentracingZipkinTracerFactory implements OpentracingTracerFactory {
-	private final String HOST_PROPERTY_NAME = "host";
-	private final String PORT_PROPERTY_NAME = "port";
-	private final String HOST_DEFAULT_VALUE = "zipkin";
-	private final String PORT_DEFAULT_VALUE = "9411";
+	private Config config;
 	
-	String zipkinHost;
-	String zipkinPort;
+	// http://enroute.osgi.org/services/org.osgi.service.component.html
+	// http://bnd.bndtools.org/chapters/210-metatype.html
+	@Meta.OCD(name = "%zipkin.config.name", localization = "OSGI-INF/l10n/metatype")
+	@interface Config {
+		@Meta.AD(required = false, deflt = "zipkin", description = "%zipkin.host.description")
+		String host();
+
+		@Meta.AD(required = false, deflt = "9411", description = "%zipkin.port.description")
+		int port();
+
+		@Meta.AD(required = false, description = "%zipkin.encoding.description")
+		Encoding encoding();
+
+		@Meta.AD(required = false, deflt = "true", description = "%zipkin.compress.description")
+		boolean compress();
+
+		@Meta.AD(required = false, deflt = Integer.MIN_VALUE + "", description = "%zipkin.maxRequests.description")
+		int maxRequests();
+
+		@Meta.AD(required = false, deflt = Integer.MIN_VALUE + "", description = "%zipkin.maxMessageSize.description")
+		int maxMessageSize();
+
+		@Meta.AD(required = false, deflt = Integer.MIN_VALUE + "", description = "%zipkin.closeTimeout.description")
+		int closeTimeout();
+
+		@Meta.AD(required = false, deflt = Integer.MIN_VALUE + "", description = "%zipkin.messageTimeout.description")
+		int messageTimeout();
+
+		@Meta.AD(required = false, deflt = Integer.MIN_VALUE + "", description = "%zipkin.queuedMaxBytes.description")
+		int queuedMaxBytes();
+
+		@Meta.AD(required = false, deflt = Integer.MIN_VALUE + "", description = "%zipkin.queuedMaxSpans.description")
+		int queuedMaxSpans();
+	}
 
 	@Activate
-	protected void activate(ComponentContext ctx, Map<String, Object> config) {
-		modified(ctx, config);
+	protected void activate(Map<String, Object> map) {
+		modified(map);
 	}
 
 	@Modified
-	protected void modified(ComponentContext ctx, Map<String, Object> config) {
-		zipkinHost = (String) config.get(HOST_PROPERTY_NAME);
-		zipkinPort = (String) config.get(PORT_PROPERTY_NAME);
-		if (zipkinHost == null) {
-			zipkinHost = HOST_DEFAULT_VALUE;
-		}
-		if (zipkinPort == null) {
-			zipkinPort = PORT_DEFAULT_VALUE;
-		}
+	protected void modified(Map<String, Object> map) {
+		this.config = Configurable.createConfigurable(Config.class, map);
 	}
 
 	/** {@inheritDoc} */
 	public Tracer newInstance(String serviceName) {
-		return new OpentracingZipkinTracer(serviceName, zipkinHost, zipkinPort);
+		return new OpentracingZipkinTracer(serviceName, config);
 	}
-
-
-
-
-
 }
