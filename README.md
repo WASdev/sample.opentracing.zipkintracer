@@ -5,7 +5,7 @@ Once implemented as an OSGI bundle, a tracer can be included as a user feature t
 pull the `opentracing-1.0` feature. 
 
 Building this project relies on the `bnd-process` plugin to process the `bnd.bnd` file which will generate
-the `MANIFEST.MF` to be included in the project. Additionally, annotations found in the [src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java)
+the `MANIFEST.MF` to be included in the project. Additionally, annotations found in the [OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java)
 provide information for the manifest. If you decide to roll your own tracer, then you'll need to ensure your factory
 implementation provides these annotations to correctly generate the manifest file.
 
@@ -46,8 +46,8 @@ Finally, enable the tracer with a configuration element (this defaults to a serv
 
 The `opentracingZipkin` element supports configuration of the zipkin server host and port,
 and detailed configuration of the zipkin builder and report. This support is provided by
-the `Config` class in [src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java).
-The options are localized and described in detail in [src/main/resources/OSGI-INF/i10n/metatype.properties](src/main/resources/OSGI-INF/i10n/metatype.properties).
+the `Config` class in [OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java).
+The options are localized and described in detail in [metatype.properties](src/main/resources/OSGI-INF/i10n/metatype.properties).
 
 For example, to specify a different host and port:
 
