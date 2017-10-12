@@ -1,12 +1,12 @@
 # Tracer Implementation
 
-A demo project that shows how to implement a tracer for the Liberty opentracing-1.0 feature.
-Once implemented as an OSGI bundle a tracer can be included as a user feature that will automatically
-pull the opentracing-1.0 feature. 
+A demo project that shows how to implement a tracer for the Liberty `opentracing-1.0` feature.
+Once implemented as an OSGI bundle, a tracer can be included as a user feature that will automatically
+pull the `opentracing-1.0` feature. 
 
-Building this project relies on the bnd-process plugin to process the bnd.bnd file which will generate
-the MANIFEST.MF to be included in the project. Additionally, annotations found in the OpentracingZipkinFactory.java
-file provide information for the manifest. If you decide to roll your own tracer, then you'll need to ensure your factory
+Building this project relies on the `bnd-process` plugin to process the `bnd.bnd` file which will generate
+the `MANIFEST.MF` to be included in the project. Additionally, annotations found in the [src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java)
+provide information for the manifest. If you decide to roll your own tracer, then you'll need to ensure your factory
 implementation provides these annotations to correctly generate the manifest file.
 
 ## opentracingZipkin
