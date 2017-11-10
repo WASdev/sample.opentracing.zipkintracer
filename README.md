@@ -1,40 +1,54 @@
 # Tracer Implementation
 
-A demo project that shows how to implement a tracer for the Liberty opentracing-1.0 feature.
-Once implemented as an OSGI bundle a tracer can be included as a user feature that will automatically
-pull the opentracing-1.0 feature. 
+A demo project that shows how to implement a tracer for the Liberty `opentracing-1.0` feature.
+Once implemented as an OSGI bundle, a tracer can be included as a user feature that will automatically
+pull the `opentracing-1.0` feature. 
 
-Building this project relies on the bnd-process plugin to process the bnd.bnd file which will generate
-the MANIFEST.MF to be included in the project. Additionally, annotations found in the OpentracingZipkinFactory.java
-file provide information for the manifest. If you decide to roll your own tracer, then you'll need to ensure your factory
+Building this project relies on the `bnd-process` plugin to process the `bnd.bnd` file which will generate
+the `MANIFEST.MF` to be included in the project. Additionally, annotations found in the [OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java)
+provide information for the manifest. If you decide to roll your own tracer, then you'll need to ensure your factory
 implementation provides these annotations to correctly generate the manifest file.
 
-A set of tests are provided with this project that should make it possible to verify that the MANIFEST.MF and the 
-OSGI-INF directory have the correct information in them.
+## opentracingZipkin
 
-## opentracing-zipkin-tracer-impl
-Run
+To compile and package, run:
 
-mvn package
+    mvn package
 
-An extensions directory will be built in the target directory.
+This will build `target/liberty-opentracing-zipkintracer-1.0-sample.zip`. Copy this file to `${wlp.user.dir}`
+and `unzip` it to install the feature extension:
 
-Copy the contents of the extensions directory to the ${wlp.user.dir} location.
+    $ cp target/liberty-opentracing-zipkintracer-1.0-sample.zip ${WLP}/usr/
+    $ cd ${WLP}/usr/
+    $ unzip liberty-opentracing-zipkintracer-1.0-sample.zip
+    $ ls -R extension/
+    extension/:
+    lib
+    
+    extension/lib:
+    com.ibm.ws.io.opentracing.zipkintracer-0.30.jar  features
+    
+    extension/lib/features:
+    opentracingZipkin-0.30.mf
 
-For example:
+Enable the feature in server.xml:
 
-cp -r target/extensions /opt/wlp/usr/
+    <featureManager>
+      [...]
+      <feature>usr:opentracingZipkin-0.30</feature>
+    </featureManager>
 
-Then enable the feature with
+Finally, enable the tracer with a configuration element (this defaults to a server at `http://zipkin:9411/`):
 
-&lt;feature&gt;usr:opentracingZipkin-0.30&lt;/feature&gt;
+    <opentracingZipkin />
 
-in server.xml
+### Configuring the tracer
 
-## Modifying the Zipkin host and port
+The `opentracingZipkin` element supports configuration of the zipkin server host and port,
+and detailed configuration of the zipkin builder and reporter. This support is provided by
+the `Config` class in [OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java).
+The options are localized and described in detail in [metatype.properties](src/main/resources/OSGI-INF/i10n/metatype.properties).
 
-You can observe in the metatype.xml that the pid provides opentracingZipkin as
-for modifying the default host and port that Liberty will look for the zipkin
-server on. This can be changed in the server.xml with xml.
+For example, to specify a different host and port:
 
-`<opentracingZipkin host="myhost.com" port="4433" />`
+    <opentracingZipkin host="myhost.com" port="4433" />

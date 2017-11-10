@@ -11,3 +11,5 @@ Import-Package: com.ibm.ws.opentracing.tracer;version="[1.0,2)",io.opentracing;v
 Export-Package: com.ibm.ws.opentracing.zipkin;version="1.0.0";uses:="com.ibm.ws.opentracing.tracer,io.opentracing,io.opentracing.propagation"
 
 Provide-Capability: osgi.service;objectClass:List<String>="com.ibm.ws.opentracing.tracer.OpentracingTracerFactory"
+
+-metatype: *
