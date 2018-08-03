@@ -111,7 +111,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<outputFile>target/sample/extension/lib/com.ibm.ws.io.opentracing.zipkintracer-0.30.jar</outputFile>
+							<outputFile>target/sample/extension/lib/com.ibm.ws.io.opentracing.zipkintracer-0.31.jar</outputFile>
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 							<artifactSet>
 								<excludes>

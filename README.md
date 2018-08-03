@@ -26,16 +26,16 @@ and `unzip` it to install the feature extension:
     lib
     
     extension/lib:
-    com.ibm.ws.io.opentracing.zipkintracer-0.30.jar  features
+    com.ibm.ws.io.opentracing.zipkintracer-0.31.jar  features
     
     extension/lib/features:
-    opentracingZipkin-0.30.mf
+    opentracingZipkin-0.31.mf
 
 Enable the feature in server.xml:
 
     <featureManager>
       [...]
-      <feature>usr:opentracingZipkin-0.30</feature>
+      <feature>usr:opentracingZipkin-0.31</feature>
     </featureManager>
 
 Finally, enable the tracer with a configuration element (this defaults to a server at `http://zipkin:9411/`):
