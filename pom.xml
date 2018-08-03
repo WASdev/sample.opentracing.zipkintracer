@@ -40,37 +40,37 @@
 		<dependency>
 			<groupId>io.opentracing.brave</groupId>
 			<artifactId>brave-opentracing</artifactId>
-			<version>0.21.0</version>
+			<version>0.31.3</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.zipkin.brave/brave -->
 		<dependency>
 			<groupId>io.zipkin.brave</groupId>
 			<artifactId>brave</artifactId>
-			<version>4.5.2</version>
+			<version>5.1.4</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.zipkin.java/zipkin -->
 		<dependency>
 			<groupId>io.zipkin.java</groupId>
 			<artifactId>zipkin</artifactId>
-			<version>1.30.3</version>
+			<version>2.10.1</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.zipkin.reporter/zipkin-reporter -->
 		<dependency>
-			<groupId>io.zipkin.reporter</groupId>
+			<groupId>io.zipkin.reporter2</groupId>
 			<artifactId>zipkin-reporter</artifactId>
-			<version>1.0.1</version>
+			<version>2.7.7</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.zipkin.reporter/zipkin-sender-okhttp3 -->
 		<dependency>
-			<groupId>io.zipkin.reporter</groupId>
+			<groupId>io.zipkin.reporter2</groupId>
 			<artifactId>zipkin-sender-okhttp3</artifactId>
-			<version>1.0.1</version>
+			<version>2.7.7</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>3.8.1</version>
+			<version>3.11.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.component -->
 		<dependency>

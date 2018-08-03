@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2017, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,15 +16,14 @@ import com.ibm.ws.opentracing.zipkin.OpentracingZipkinTracerFactory.Config;
 
 import brave.Tracing;
 import brave.opentracing.BraveTracer;
-import io.opentracing.ActiveSpan;
+import io.opentracing.ScopeManager;
 import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
-import zipkin.reporter.AsyncReporter;
-import zipkin.reporter.Reporter;
-import zipkin.reporter.Sender;
-import zipkin.reporter.okhttp3.OkHttpSender;
+import zipkin2.reporter.AsyncReporter;
+import zipkin2.reporter.Sender;
+import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
  * This class wraps the Brave tracer to provide a
@@ -47,7 +46,7 @@ public class OpentracingZipkinTracer implements Tracer {
 	 */
 	public OpentracingZipkinTracer(String serviceName, Config config) {
 		String traceServiceUrl = "http://"+config.host()+":"+config.port()+"/api/v1/spans";
-		OkHttpSender.Builder senderBuilder = OkHttpSender.builder().endpoint(traceServiceUrl).compressionEnabled(config.compress());
+		OkHttpSender.Builder senderBuilder = OkHttpSender.newBuilder().endpoint(traceServiceUrl).compressionEnabled(config.compress());
 		if (config.maxRequests() != Integer.MIN_VALUE) {
 			senderBuilder.maxRequests(config.maxRequests());
 		}
@@ -71,22 +70,12 @@ public class OpentracingZipkinTracer implements Tracer {
 		if (config.queuedMaxSpans() != Integer.MIN_VALUE) {
 			reporterBuilder.queuedMaxSpans(config.queuedMaxSpans());
 		}
-		Reporter<zipkin.Span> reporter = reporterBuilder.build();
+		AsyncReporter<zipkin2.Span> reporter = reporterBuilder.build();
 		Tracing braveTracing = Tracing.newBuilder()
 				.localServiceName(serviceName)
-				.reporter(reporter)
+				.spanReporter(reporter)
 				.build();
 		tracer = BraveTracer.create(braveTracing);
-	}
-
-	/** {@inheritDoc} */
-	public ActiveSpan activeSpan() {
-		return tracer.activeSpan();
-	}
-
-	/** {@inheritDoc} */
-	public ActiveSpan makeActive(Span span) {
-		return tracer.makeActive(span);
 	}
 
 	/** {@inheritDoc} */
@@ -102,5 +91,15 @@ public class OpentracingZipkinTracer implements Tracer {
 	/** {@inheritDoc} */
 	public <C> void inject(SpanContext spanContext, Format<C> format, C carrier) {
 		tracer.inject(spanContext, format, carrier);
+	}
+
+	public Span activeSpan() {
+		// TODO Auto-generated method stub
+		return tracer.activeSpan();
+	}
+
+	public ScopeManager scopeManager() {
+		// TODO Auto-generated method stub
+		return tracer.scopeManager();
 	}
 }
