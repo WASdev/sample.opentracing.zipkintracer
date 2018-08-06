@@ -45,7 +45,8 @@ public class OpentracingZipkinTracer implements Tracer {
 	 * @param config
 	 */
 	public OpentracingZipkinTracer(String serviceName, Config config) {
-		String traceServiceUrl = "http://"+config.host()+":"+config.port()+"/api/v1/spans";
+		String traceServiceUrl = "http://"+config.host()+":"+config.port()+"/api/v2/spans";
+		
 		OkHttpSender.Builder senderBuilder = OkHttpSender.newBuilder().endpoint(traceServiceUrl).compressionEnabled(config.compress());
 		if (config.maxRequests() != Integer.MIN_VALUE) {
 			senderBuilder.maxRequests(config.maxRequests());
