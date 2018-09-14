@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2017, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import com.ibm.ws.opentracing.tracer.OpentracingTracerFactory;
 import aQute.bnd.annotation.metatype.Configurable;
 import aQute.bnd.annotation.metatype.Meta;
 import io.opentracing.Tracer;
-import zipkin.reporter.Encoding;
+import zipkin2.codec.Encoding;
 
 /**
  * Factory for delivering Opentracing Tracers backed by Zipkin implementation.

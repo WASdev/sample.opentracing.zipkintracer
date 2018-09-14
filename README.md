@@ -1,8 +1,8 @@
 # Tracer Implementation
 
-A demo project that shows how to implement a tracer for the Liberty `opentracing-1.0` feature.
+A demo project that shows how to implement a tracer for the Liberty `opentracing-1.1` feature.
 Once implemented as an OSGI bundle, a tracer can be included as a user feature that will automatically
-pull the `opentracing-1.0` feature. 
+pull the `opentracing-1.1` feature. 
 
 Building this project relies on the `bnd-process` plugin to process the `bnd.bnd` file which will generate
 the `MANIFEST.MF` to be included in the project. Additionally, annotations found in the [OpentracingZipkinTracerFactory.java](src/main/java/com/ibm/ws/opentracing/zipkin/OpentracingZipkinTracerFactory.java)
@@ -15,27 +15,27 @@ To compile and package, run:
 
     mvn package
 
-This will build `target/liberty-opentracing-zipkintracer-1.0-sample.zip`. Copy this file to `${wlp.user.dir}`
+This will build `target/liberty-opentracing-zipkintracer-1.1-sample.zip`. Copy this file to `${wlp.user.dir}`
 and `unzip` it to install the feature extension:
 
-    $ cp target/liberty-opentracing-zipkintracer-1.0-sample.zip ${WLP}/usr/
+    $ cp target/liberty-opentracing-zipkintracer-1.1-sample.zip ${WLP}/usr/
     $ cd ${WLP}/usr/
-    $ unzip liberty-opentracing-zipkintracer-1.0-sample.zip
+    $ unzip liberty-opentracing-zipkintracer-1.1-sample.zip
     $ ls -R extension/
     extension/:
     lib
     
     extension/lib:
-    com.ibm.ws.io.opentracing.zipkintracer-0.30.jar  features
+    com.ibm.ws.io.opentracing.zipkintracer-0.31.jar  features
     
     extension/lib/features:
-    opentracingZipkin-0.30.mf
+    opentracingZipkin-0.31.mf
 
 Enable the feature in server.xml:
 
     <featureManager>
       [...]
-      <feature>usr:opentracingZipkin-0.30</feature>
+      <feature>usr:opentracingZipkin-0.31</feature>
     </featureManager>
 
 Finally, enable the tracer with a configuration element (this defaults to a server at `http://zipkin:9411/`):

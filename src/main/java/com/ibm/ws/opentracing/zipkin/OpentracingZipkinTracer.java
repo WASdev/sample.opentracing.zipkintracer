@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 IBM Corporation and others.
+ * Copyright (c) 2017, 2018 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,39 +15,44 @@ import java.util.concurrent.TimeUnit;
 import com.ibm.ws.opentracing.zipkin.OpentracingZipkinTracerFactory.Config;
 
 import brave.Tracing;
+import brave.Tracing.Builder;
 import brave.opentracing.BraveTracer;
-import io.opentracing.ActiveSpan;
+import brave.propagation.CurrentTraceContext;
+import io.opentracing.ScopeManager;
 import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
 import io.opentracing.propagation.Format;
-import zipkin.reporter.AsyncReporter;
-import zipkin.reporter.Reporter;
-import zipkin.reporter.Sender;
-import zipkin.reporter.okhttp3.OkHttpSender;
+import zipkin2.reporter.AsyncReporter;
+import zipkin2.reporter.Sender;
+import zipkin2.reporter.okhttp3.OkHttpSender;
 
 /**
- * This class wraps the Brave tracer to provide a
- * generic tracer implementation to the opentracing feature.
+ * This class wraps the Brave tracer to provide a generic tracer implementation
+ * to the opentracing feature.
  *
  * In theory the Brave tracer could be replaced by another tracer
  * implementation.
  *
  */
 public class OpentracingZipkinTracer implements Tracer {
+
+	public static final boolean DEBUG = Boolean.getBoolean("opentracingDebug");
+
 	Tracer tracer;
 
 	/**
-	 * Creates and returns a tracer that is uses 
-	 * a serviceName and the location of a zipkin host/port
-	 * to provide tracing capability.
+	 * Creates and returns a tracer that is uses a serviceName and the location of a
+	 * zipkin host/port to provide tracing capability.
 	 *
 	 * @param serviceName
 	 * @param config
 	 */
 	public OpentracingZipkinTracer(String serviceName, Config config) {
-		String traceServiceUrl = "http://"+config.host()+":"+config.port()+"/api/v1/spans";
-		OkHttpSender.Builder senderBuilder = OkHttpSender.builder().endpoint(traceServiceUrl).compressionEnabled(config.compress());
+		String traceServiceUrl = "http://" + config.host() + ":" + config.port() + "/api/v2/spans";
+
+		OkHttpSender.Builder senderBuilder = OkHttpSender.newBuilder().endpoint(traceServiceUrl)
+				.compressionEnabled(config.compress());
 		if (config.maxRequests() != Integer.MIN_VALUE) {
 			senderBuilder.maxRequests(config.maxRequests());
 		}
@@ -71,36 +76,68 @@ public class OpentracingZipkinTracer implements Tracer {
 		if (config.queuedMaxSpans() != Integer.MIN_VALUE) {
 			reporterBuilder.queuedMaxSpans(config.queuedMaxSpans());
 		}
-		Reporter<zipkin.Span> reporter = reporterBuilder.build();
-		Tracing braveTracing = Tracing.newBuilder()
-				.localServiceName(serviceName)
-				.reporter(reporter)
-				.build();
+		AsyncReporter<zipkin2.Span> reporter = reporterBuilder.build();
+		Builder tracingBuilder = Tracing.newBuilder();
+		tracingBuilder.currentTraceContext(CurrentTraceContext.Default.create());
+		Tracing braveTracing = tracingBuilder.localServiceName(serviceName).spanReporter(reporter).build();
 		tracer = BraveTracer.create(braveTracing);
-	}
-
-	/** {@inheritDoc} */
-	public ActiveSpan activeSpan() {
-		return tracer.activeSpan();
-	}
-
-	/** {@inheritDoc} */
-	public ActiveSpan makeActive(Span span) {
-		return tracer.makeActive(span);
+		System.out.println("Created " + toString());
 	}
 
 	/** {@inheritDoc} */
 	public SpanBuilder buildSpan(String operationName) {
-		return tracer.buildSpan(operationName);
+		if (DEBUG)
+			System.out.println(toString() + " buildSpan: " + operationName);
+		
+		SpanBuilder result = tracer.buildSpan(operationName);
+
+		if (DEBUG)
+			System.out.println(toString() + " buildSpan: " + result);
+
+		return result;
 	}
 
 	/** {@inheritDoc} */
 	public <C> SpanContext extract(Format<C> format, C carrier) {
-		return tracer.extract(format, carrier);
+		SpanContext result = tracer.extract(format, carrier);
+
+		if (DEBUG)
+			System.out.println(toString() + " extract: " + result);
+
+		return result;
 	}
 
 	/** {@inheritDoc} */
 	public <C> void inject(SpanContext spanContext, Format<C> format, C carrier) {
+		if (DEBUG)
+			System.out.println(toString() + " inject spanContext: " + spanContext + ", format: " + format
+					+ ", carrier: " + carrier);
+
 		tracer.inject(spanContext, format, carrier);
+	}
+
+	/** {@inheritDoc} */
+	public Span activeSpan() {
+		Span result = tracer.activeSpan();
+
+		if (DEBUG)
+			System.out.println(toString() + " activeSpan: " + result);
+
+		return result;
+	}
+
+	/** {@inheritDoc} */
+	public ScopeManager scopeManager() {
+		ScopeManager result = tracer.scopeManager();
+
+		if (DEBUG)
+			System.out.println(toString() + " activeSpan: " + result);
+
+		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " { tracer: " + tracer + " }";
 	}
 }
