@@ -15,12 +15,12 @@ To compile and package, run:
 
     mvn package
 
-This will build `target/liberty-opentracing-zipkintracer-1.1-sample.zip`. Copy this file to `${wlp.user.dir}`
+This will build `target/liberty-opentracing-zipkintracer-1.1.1-sample.zip`. Copy this file to `${wlp.user.dir}`
 and `unzip` it to install the feature extension:
 
-    $ cp target/liberty-opentracing-zipkintracer-1.1-sample.zip ${WLP}/usr/
+    $ cp target/liberty-opentracing-zipkintracer-1.1.1-sample.zip ${WLP}/usr/
     $ cd ${WLP}/usr/
-    $ unzip liberty-opentracing-zipkintracer-1.1-sample.zip
+    $ unzip liberty-opentracing-zipkintracer-1.1.1-sample.zip
     $ ls -R extension/
     extension/:
     lib
