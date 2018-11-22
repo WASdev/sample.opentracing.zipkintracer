@@ -2,7 +2,7 @@ Bundle-SymbolicName: com.ibm.ws.opentracing.zipkin
 Bundle-Name: Opentracing Zipkin
 Bundle-Description: Opentracing Zipkin Factory Implemention; version=1.1
 Bundle-ManifestVersion: 2
-Bundle-Version: 1.0
+Bundle-Version: 1.1
 
 -dsannotations: com.ibm.ws.opentracing.zipkin.OpentracingZipkinTracerFactory 
 
