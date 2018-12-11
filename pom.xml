@@ -1,17 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <groupId>net.wasdev.wlp.tracer</groupId>
     <artifactId>liberty-opentracing-zipkintracer</artifactId>
-    <version>1.2</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
-  
-	<name>liberty-zipkin-tracer</name>
+
+    <name>liberty-zipkin-tracer</name>
     <description>
        Sample Liberty profile feature demonstrating an opentracing.io API compliant Zipkin tracer 
     </description>
     <url>https://wasdev.github.io</url>
-		
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -29,206 +31,285 @@
 
     <developers>
         <developer>
-            <id>dtadcox</id>
-            <name>David Adcox</name>
-            <email>codeapex@gmail.com</email>
+            <name>Felix Wong</name>
+            <url>https://github.com/fmhwong</url>
+            <email>fmhwong@ca.ibm.com</email>
         </developer>
     </developers>
-	
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/io.opentracing.brave/brave-opentracing -->
-		<dependency>
-			<groupId>io.opentracing.brave</groupId>
-			<artifactId>brave-opentracing</artifactId>
-			<version>0.31.3</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.zipkin.brave/brave -->
-		<dependency>
-			<groupId>io.zipkin.brave</groupId>
-			<artifactId>brave</artifactId>
-			<version>5.1.4</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.zipkin.java/zipkin -->
-		<dependency>
-			<groupId>io.zipkin.zipkin2</groupId>
-			<artifactId>zipkin</artifactId>
-			<version>2.11.1</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.zipkin.reporter/zipkin-reporter -->
-		<dependency>
-			<groupId>io.zipkin.reporter2</groupId>
-			<artifactId>zipkin-reporter</artifactId>
-			<version>2.7.7</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/io.zipkin.reporter/zipkin-sender-okhttp3 -->
-		<dependency>
-			<groupId>io.zipkin.reporter2</groupId>
-			<artifactId>zipkin-sender-okhttp3</artifactId>
-			<version>2.7.7</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
-		<dependency>
-			<groupId>com.squareup.okhttp3</groupId>
-			<artifactId>okhttp</artifactId>
-			<version>3.11.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.component -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.service.component</artifactId>
-			<version>1.3.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.component.annotations -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.service.component.annotations</artifactId>
-			<version>1.3.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/biz.aQute.bnd/bndlib -->
-		<dependency>
-			<groupId>biz.aQute.bnd</groupId>
-			<artifactId>bndlib</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<outputFile>target/sample/extension/lib/com.ibm.ws.io.opentracing.zipkintracer-0.31.jar</outputFile>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-							<artifactSet>
-								<excludes>
-									<exclude>io.opentracing:opentracing-api</exclude>
-									<exclude>org.osgi:org.osgi.service.component.annotations</exclude>
-								</excludes>
-							</artifactSet>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-									<resource>OpentracingTracerFactory.class</resource>
-								</transformer>
-							</transformers>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
-			<plugin>
-				<groupId>biz.aQute.bnd</groupId>
-				<artifactId>bnd-maven-plugin</artifactId>
-				<version>2.4.1</version>
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>Sonatype OSSRH - Release Staging Area</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Sonatype OSSRH Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
-				<executions>
-					<execution>
-						<goals>
-							<goal>bnd-process</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/io.opentracing.brave/brave-opentracing -->
+        <dependency>
+            <groupId>io.opentracing.brave</groupId>
+            <artifactId>brave-opentracing</artifactId>
+            <version>0.31.3</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.zipkin.brave/brave -->
+        <dependency>
+            <groupId>io.zipkin.brave</groupId>
+            <artifactId>brave</artifactId>
+            <version>5.1.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.zipkin.java/zipkin -->
+        <dependency>
+            <groupId>io.zipkin.zipkin2</groupId>
+            <artifactId>zipkin</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.zipkin.reporter/zipkin-reporter -->
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-reporter</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.zipkin.reporter/zipkin-sender-okhttp3 -->
+        <dependency>
+            <groupId>io.zipkin.reporter2</groupId>
+            <artifactId>zipkin-sender-okhttp3</artifactId>
+            <version>2.7.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.11.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.component -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.service.component.annotations -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.service.component.annotations</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/biz.aQute.bnd/bndlib -->
+        <dependency>
+            <groupId>biz.aQute.bnd</groupId>
+            <artifactId>bndlib</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+    </dependencies>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>default-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<excludes>
-								<exclude>com/**/tracer/**</exclude>
-							</excludes>
-							<archive>
-								<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4.3</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${basedir}/target/sample/extension/lib/features</outputDirectory>
-							<resources>          
-								<resource>
-									<directory>src/features</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>              
-						</configuration>            
-					</execution>
-				</executions>
-			</plugin>
+    <build>
+        <plugins>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-source-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>attach-sources</id>
-                  <goals>
-                    <goal>jar</goal>
-                  </goals>
-                </execution>
-              </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>attach-javadocs</id>
-                  <goals>
-                    <goal>jar</goal>
-                  </goals>
-                </execution>
-              </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>target/sample/extension/lib/com.ibm.ws.io.opentracing.zipkintracer-0.31.jar</outputFile>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>io.opentracing:opentracing-api</exclude>
+                                    <exclude>org.osgi:org.osgi.service.component.annotations</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <transformers>
+                                <transformer
+                                    implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                                    <resource>OpentracingTracerFactory.class</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <version>2.4.1</version>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bnd-process</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/**/tracer/**</exclude>
+                            </excludes>
+                            <archive>
+                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-assembly-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>create-distribution</id>
-                  <phase>package</phase>
-                  <goals>
-                    <goal>single</goal>
-                  </goals>
-                  <configuration>
-                    <descriptors>
-                      <descriptor>assembly.xml</descriptor>
-                    </descriptors>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>    
-		</plugins>
-	</build>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/sample/extension/lib/features</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/features</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>create-distribution</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.3</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <serverId>ossrh</serverId>
+                            <autoReleaseAfterClose>${autorelease}</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
