@@ -1,14 +1,14 @@
 Bundle-SymbolicName: com.ibm.ws.opentracing.zipkin
 Bundle-Name: Opentracing Zipkin
-Bundle-Description: Opentracing Zipkin Factory Implemention; version=1.2
+Bundle-Description: Opentracing Zipkin Factory Implemention; version=1.3
 Bundle-ManifestVersion: 2
-Bundle-Version: 1.2
+Bundle-Version: 1.3
 
 -dsannotations: com.ibm.ws.opentracing.zipkin.OpentracingZipkinTracerFactory 
 
 Import-Package: com.ibm.ws.opentracing.tracer;version="[1.1,2)",io.opentracing;version="[0.31,1)", \
  io.opentracing.propagation;version="[0.31,1)",io.opentracing.tag;version="0.31.0",javax.net.ssl,javax.net,org.osgi.service.component
-Export-Package: com.ibm.ws.opentracing.zipkin;version="1.2.0";uses:="com.ibm.ws.opentracing.tracer,io.opentracing,io.opentracing.propagation"
+Export-Package: com.ibm.ws.opentracing.zipkin;version="1.3.0";uses:="com.ibm.ws.opentracing.tracer,io.opentracing,io.opentracing.propagation"
 
 Provide-Capability: osgi.service;objectClass:List<String>="com.ibm.ws.opentracing.tracer.OpentracingTracerFactory"
 
