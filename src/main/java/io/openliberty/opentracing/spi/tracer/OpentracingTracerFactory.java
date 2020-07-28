@@ -9,7 +9,7 @@
  * IBM Corporation - initial API and implementation
  *****************************************************************************/
 
-package com.ibm.ws.opentracing.tracer;
+package io.openliberty.opentracing.spi.tracer;
 
 import io.opentracing.Tracer;
 
