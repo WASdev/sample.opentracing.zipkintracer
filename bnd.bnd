@@ -6,7 +6,7 @@ Bundle-Version: 3.0
 
 -dsannotations: com.ibm.ws.opentracing.zipkin.OpentracingZipkinTracerFactory 
 
-Import-Package: io.openliberty.opentracing.spi.tracer;version="[3.0,4)",io.opentracing;version="[0.33,1)", \
+Import-Package: io.openliberty.opentracing.spi.tracer;version="[2.0,3)",io.opentracing;version="[0.33,1)", \
  io.opentracing.propagation;version="[0.33,1)",io.opentracing.tag;version="0.33.0",javax.net.ssl,javax.net,org.osgi.service.component
 Export-Package: com.ibm.ws.opentracing.zipkin;version="3.0.0";uses:="io.openliberty.opentracing.spi.tracer,io.opentracing,io.opentracing.propagation"
 
