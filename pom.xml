@@ -3,7 +3,7 @@
 
     <groupId>net.wasdev.wlp.tracer</groupId>
     <artifactId>liberty-opentracing-zipkintracer</artifactId>
-    <version>3.1-SNAPSHOT</version>
+    <version>3.0</version>
     <packaging>jar</packaging>
 
     <name>liberty-zipkin-tracer</name>
@@ -29,7 +29,7 @@
         <connection>scm:git:git@github.com:WASdev/sample.opentracing.zipkintracer.git</connection>
         <developerConnection>scm:git:git@github.com:WASdev/sample.opentracing.zipkintracer.git</developerConnection>
         <url>git@github.com:WASdev/sample.opentracing.zipkintracer.git</url>
-        <tag>HEAD</tag>
+        <tag>3.0</tag>
     </scm>
 
     <developers>
