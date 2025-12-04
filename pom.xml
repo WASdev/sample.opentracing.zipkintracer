@@ -42,12 +42,12 @@
 
     <distributionManagement>
         <repository>
-            <id>ossrh</id>
+            <id>central</id>
             <name>Sonatype OSSRH - Release Staging Area</name>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>ossrh</id>
+            <id>central</id>
             <name>Sonatype OSSRH Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
@@ -276,7 +276,7 @@
                         <extensions>true</extensions>
                         <configuration>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <serverId>ossrh</serverId>
+                            <serverId>central</serverId>
                             <autoReleaseAfterClose>${autorelease}</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
