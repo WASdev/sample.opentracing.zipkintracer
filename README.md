@@ -52,3 +52,42 @@ The options are localized and described in detail in [metatype.properties](src/m
 For example, to specify a different host and port:
 
     <opentracingZipkin host="myhost.com" port="4433" />
+
+## Publishing to Maven Central
+
+This project uses the **Maven Central Portal** for publishing releases. The publishing process uses manual review and approval for maximum control.
+
+### Quick Start
+
+1. **Deploy to Central Portal:**
+   ```bash
+   mvn clean deploy -P central-release
+   ```
+
+2. **Review and Publish:**
+   - Log in to https://central.sonatype.com/
+   - Navigate to "Deployments"
+   - Review your deployment
+   - Click "Publish" to release to Maven Central
+
+### Prerequisites
+
+- Maven Central Portal account with verified namespace
+- User token configured in `~/.m2/settings.xml`
+- GPG key for signing artifacts
+
+For detailed instructions, see [MIGRATION.md](MIGRATION.md).
+
+### Maven Dependency
+
+Once published, users can include this tracer in their projects:
+
+```xml
+<dependency>
+    <groupId>net.wasdev.wlp.tracer</groupId>
+    <artifactId>liberty-opentracing-zipkintracer</artifactId>
+    <version>3.0.2</version>
+</dependency>
+```
+
+Available on Maven Central: https://central.sonatype.com/artifact/net.wasdev.wlp.tracer/liberty-opentracing-zipkintracer
