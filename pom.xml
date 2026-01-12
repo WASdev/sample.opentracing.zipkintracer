@@ -3,12 +3,12 @@
 
     <groupId>net.wasdev.wlp.tracer</groupId>
     <artifactId>liberty-opentracing-zipkintracer</artifactId>
-    <version>${version}</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
 
     <name>liberty-zipkin-tracer</name>
     <description>
-       Sample Liberty profile feature demonstrating an opentracing.io API compliant Zipkin tracer 
+       Sample Liberty profile feature demonstrating an opentracing.io API compliant Zipkin tracer
     </description>
     <url>https://wasdev.github.io</url>
 
