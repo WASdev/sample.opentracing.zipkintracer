@@ -3,7 +3,7 @@
 
     <groupId>net.wasdev.wlp.tracer</groupId>
     <artifactId>liberty-opentracing-zipkintracer</artifactId>
-    <version>${revision}</version>
+    <version>3.0.1</version>
     <packaging>jar</packaging>
 
     <name>liberty-zipkin-tracer</name>
